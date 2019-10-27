@@ -1,0 +1,39 @@
+/*Convert int to string*/
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        string out_string;
+        out_string = to_string(x);
+        int num = 0;
+        int length = out_string.length();
+        while(length > num * 2)
+        {
+            if(out_string[num] == out_string[length - num - 1])
+                num++;
+            else
+                return false;
+        }
+        return true;
+    }
+};
+
+/*Not convert int to string*/
+ class Solution {
+    public:
+        bool isPalindrome(int x) {
+            if(x < 0) 
+              return false;
+            if(x < 10) 
+              return true;
+            long num = 0, x1 = x;
+            while(x1 != 0) 
+            {
+                num = num * 10 + x1 % 10;
+                x1 /= 10;
+            }
+            if(num == x) 
+              return true;
+            else 
+              return false;
+        }
+   };
