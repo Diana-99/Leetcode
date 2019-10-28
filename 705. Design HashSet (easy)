@@ -31,7 +31,7 @@ public:
     }
 };
 
-/** simple but slow C solution **/
+/** simple C solution which is similar to the C++ solution**/
 #define SIZE 1005
 
 
@@ -44,10 +44,10 @@ typedef struct {
 MyHashSet* myHashSetCreate() {
     MyHashSet *hs = (MyHashSet*)malloc(sizeof(MyHashSet));
     hs->values = (int **)malloc(sizeof(int*) * SIZE);
-    /*for(int i = 0; i < SIZE; i++)
-        hs->values[i] = NULL;*/
     for(int i = 0; i < SIZE; i++)
-        hs->values[i] = (int *)malloc(sizeof(int) * SIZE);
+        hs->values[i] = NULL;
+    /*for(int i = 0; i < SIZE; i++)
+        hs->values[i] = (int *)malloc(sizeof(int) * SIZE);*/
     return hs;
 }
 
@@ -64,6 +64,10 @@ void myHashSetAdd(MyHashSet* obj, int key) {
 void myHashSetRemove(MyHashSet* obj, int key) {
     int hash1 = key / 1000;
     int hash2 = key % 1000;
+    if(obj->values[hash1] == NULL)
+    {
+        obj->values[hash1] = (int *)malloc(sizeof(int) * SIZE);
+    }
     obj->values[hash1][hash2] = -1;
 }
 
