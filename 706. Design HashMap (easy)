@@ -1,0 +1,79 @@
+/** simple but slow C solution **/
+
+#define SIZE 1005
+
+
+typedef struct {
+    int **values;
+} MyHashMap;
+
+/** Initialize your data structure here. */
+
+MyHashMap* myHashMapCreate() {
+    MyHashMap *hs = (MyHashMap*)malloc(sizeof(MyHashMap));
+    hs->values = (int **)malloc(sizeof(int*) * SIZE);
+    for(int i = 0; i < SIZE; i++)
+        hs->values[i] = NULL;
+    /*for(int i = 0; i < SIZE; i++)
+        hs->values[i] = (int *)malloc(sizeof(int) * SIZE);*/
+    return hs;
+}
+
+/** value will always be non-negative. */
+void myHashMapPut(MyHashMap* obj, int key, int value) {
+    int hash1 = key / 1000;
+    int hash2 = key % 1000;
+    if(obj->values[hash1] == NULL)
+    {
+        obj->values[hash1] = (int *)malloc(sizeof(int) * SIZE);
+        for(int i = 0; i < SIZE; i++)
+        {
+            obj->values[hash1][i] = -1; 
+        }
+        
+    }
+    obj->values[hash1][hash2] = value;
+}
+
+/** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
+int myHashMapGet(MyHashMap* obj, int key) {
+    int hash1 = key / 1000;
+    int hash2 = key % 1000;
+    if(obj->values[hash1] == NULL)
+        return -1;
+    if(obj->values[hash1][hash2] == -1)
+        return -1;
+    return obj->values[hash1][hash2];
+}
+
+/** Removes the mapping of the specified value key if this map contains a mapping for the key */
+void myHashMapRemove(MyHashMap* obj, int key) {
+    int hash1 = key / 1000;
+    int hash2 = key % 1000;
+    if(obj->values[hash1] == NULL)
+    {
+        obj->values[hash1] = (int *)malloc(sizeof(int) * SIZE);
+        for(int i = 0; i < SIZE; i++)
+            obj->values[hash1][i] = -1;
+    }
+    obj->values[hash1][hash2] = -1;
+}
+
+void myHashMapFree(MyHashMap* obj) {
+    for(int i = 0; i < SIZE; i++)
+        free(obj->values[i]);
+    free(obj->values);
+    free(obj);
+}
+
+/**
+ * Your MyHashMap struct will be instantiated and called as such:
+ * MyHashMap* obj = myHashMapCreate();
+ * myHashMapPut(obj, key, value);
+ 
+ * int param_2 = myHashMapGet(obj, key);
+ 
+ * myHashMapRemove(obj, key);
+ 
+ * myHashMapFree(obj);
+*/
