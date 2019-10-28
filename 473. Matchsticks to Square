@@ -1,0 +1,49 @@
+/* 第一个medium + 第一个双100纪念撒花 */
+/** dfs **/
+
+bool dfs(int *nums, int numsSize, int len, bool *visit)
+{
+    for(int i = 0; i < numsSize; i++)
+    {
+        if(!visit[i])
+        {
+            visit[i] = 1;
+            if(nums[i] > len)
+            {
+                visit[i] = false;
+                return false;
+            }
+            else if(nums[i] == len)
+                return true;
+            else
+            {
+                if(dfs(nums, numsSize, len - nums[i], visit) == true)
+                    return true;      
+                else
+                    visit[i] = false;
+            }
+        }
+    }
+    return false;
+}
+
+int inc(const void * a,const void *b)
+{
+    return * (int * )b-* (int *)a;
+}
+
+bool makesquare(int* nums, int numsSize){
+    int sum = 0;
+    bool visit[20] = {0};
+    qsort(nums, numsSize, sizeof(int), inc);
+    for(int i = 0; i < numsSize; i++)
+        sum += nums[i];
+    if(sum % 4)
+        return false;
+    for(int i = 0; i < 3; i++)
+        if(!dfs(nums, numsSize, sum/4, visit))
+            return false;
+    return true;
+    
+}
+
