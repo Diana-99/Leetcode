@@ -1,0 +1,96 @@
+/*simple but slow C++ solution*/
+
+class MyHashSet {
+public:
+    /** Initialize your data structure here. */
+    vector<vector<int>> mySet;
+    MyHashSet() {
+        mySet = vector<vector<int>>(1001,vector<int>());
+    }
+    
+    void add(int key) {
+        int hash1 = key/1000;
+        int hash2 = key%1000;
+        if (mySet[hash1].empty()) mySet[hash1].resize(1000,-1);
+        mySet[hash1][hash2] = key;
+    }
+    
+    void remove(int key) {
+        int hash1 = key/1000;
+        int hash2 = key%1000;
+        if (mySet[hash1].empty()) return ;
+        mySet[hash1][hash2] = -1;
+    }
+    
+    /** Returns true if this set contains the specified element */
+    bool contains(int key) {
+        int hash1 = key/1000;
+        int hash2 = key%1000;
+        if (mySet[hash1].empty()) return false;
+        return mySet[hash1][hash2] == key;
+    }
+};
+
+/** simple but slow C solution **/
+#define SIZE 1005
+
+
+typedef struct {
+    int **values;
+} MyHashSet;
+
+/** Initialize your data structure here. */
+
+MyHashSet* myHashSetCreate() {
+    MyHashSet *hs = (MyHashSet*)malloc(sizeof(MyHashSet));
+    hs->values = (int **)malloc(sizeof(int*) * SIZE);
+    /*for(int i = 0; i < SIZE; i++)
+        hs->values[i] = NULL;*/
+    for(int i = 0; i < SIZE; i++)
+        hs->values[i] = (int *)malloc(sizeof(int) * SIZE);
+    return hs;
+}
+
+void myHashSetAdd(MyHashSet* obj, int key) {
+    int hash1 = key / 1000;
+    int hash2 = key % 1000;
+    if(obj->values[hash1] == NULL)
+    {
+        obj->values[hash1] = (int *)malloc(sizeof(int) * SIZE);
+    }
+    obj->values[hash1][hash2] = key;
+}
+
+void myHashSetRemove(MyHashSet* obj, int key) {
+    int hash1 = key / 1000;
+    int hash2 = key % 1000;
+    obj->values[hash1][hash2] = -1;
+}
+
+/** Returns true if this set contains the specified element */
+bool myHashSetContains(MyHashSet* obj, int key) {
+    int hash1 = key / 1000;
+    int hash2 = key % 1000;
+    if(obj->values[hash1]==NULL)
+        return false;
+    return obj->values[hash1][hash2] == key;
+}
+
+void myHashSetFree(MyHashSet* obj) {
+    for(int i = 0; i < SIZE; i++)
+        free(obj->values[i]);
+    free(obj->values);
+    free(obj);
+}
+
+/**
+ * Your MyHashSet struct will be instantiated and called as such:
+ * MyHashSet* obj = myHashSetCreate();
+ * myHashSetAdd(obj, key);
+ 
+ * myHashSetRemove(obj, key);
+ 
+ * bool param_3 = myHashSetContains(obj, key);
+ 
+ * myHashSetFree(obj);
+*/
