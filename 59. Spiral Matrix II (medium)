@@ -1,0 +1,22 @@
+/* Python Practice */
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        ans = [[0]*n for i in range(n)]
+        visited = [[False]*n for i in range(n)]
+        num = 1
+        dir = ((0,1),(1,0),(0,-1),(-1,0))
+        mov_dir = 0
+        i = 0
+        j = 0
+        while(num <= n * n):
+            ans[i][j] = num
+            visited[i][j] = True
+            num += 1
+            tmp_i = i + dir[mov_dir][0]
+            tmp_j = j + dir[mov_dir][1]
+            flag = tmp_i < 0 or tmp_i >= n or tmp_j < 0 or tmp_j >= n or visited[tmp_i][tmp_j] == True
+            if flag:
+                mov_dir = (mov_dir+1)%4
+            i += dir[mov_dir][0]
+            j += dir[mov_dir][1]
+        return ans
