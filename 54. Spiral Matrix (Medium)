@@ -1,0 +1,28 @@
+/* Python Practice */
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        if not matrix:
+            return []
+        lenx = len(matrix)
+        leny = len(matrix[0])
+        visited = [[0 for i in range(leny + 1)] for j in range(lenx + 1)]
+        dis = ((0,1),(1,0),(0,-1),(-1,0))
+        ans = []
+        i = 0
+        j = 0
+        move_idx = 0
+        num = lenx * leny;
+        while (num > 0) :
+            num = num - 1;
+            ans.append(matrix[i][j])
+            visited[i][j] = True
+            tmp_i = i + dis[move_idx][0]
+            tmp_j = j + dis[move_idx][1]
+            
+            flag =  (tmp_i < 0) or (tmp_j < 0) or (tmp_i >= len(matrix)) or (tmp_j >= len(matrix[0])) or (visited[tmp_i][tmp_j] == True)
+            if flag:
+                move_idx = (move_idx + 1) % 4
+                
+            i += dis[move_idx][0]
+            j += dis[move_idx][1]
+        return ans
