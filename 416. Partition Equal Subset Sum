@@ -1,0 +1,49 @@
+/*二维数组*/
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int sum = 0;
+    vector<int>::iterator v = nums.begin();
+    while( v != nums.end())
+    {
+        sum += *v;
+        v++;
+    }
+    if(sum & 1) return false;//奇数显然不符合条件
+    vector<vector<bool>> f(nums.size(), vector<bool>((sum>>=1)+1, false));
+    for(int i = 0; i < nums.size() - 1; i++)
+        f[i][0] = true;
+    for(int i = 1; i < nums.size() ; i++)
+    {
+      for(int s = nums[i]; s <= sum; s++)
+      {
+        f[i][s] = max(f[i-1][s], f[i-1][s-nums[i]]);
+      }
+    }
+    return f[nums.size()-1][sum];
+    }
+};
+
+/*简化为一维数组*/
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int sum = 0;
+    vector<int>::iterator v = nums.begin();
+    while( v != nums.end())
+    {
+        sum += *v;
+        v++;
+    }
+    if(sum & 1) 
+        return false;//奇数显然不符合条件
+    if(nums.size() == 1)
+        return false;
+    vector<bool> f((sum>>=1)+1, false);
+    f[nums[0]] = true;
+    for(int i = 1 ; i < nums.size() ; i++)
+      for(int s = sum; s >= nums[i]; s--)
+        f[s] = f[s] || f[s-nums[i]];
+    return f[sum];
+    }
+};
