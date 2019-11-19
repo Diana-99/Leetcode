@@ -1,0 +1,52 @@
+/*二维数组*/
+#define INF 0x3f3f3f3f
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        vector<vector<int>>f(coins.size(), vector(amount+5, INF));
+        for(int i = 0; i <= coins.size() - 1; i++)
+            f[i][0] = 0;
+        for(int i = 1; i*coins[0] <= amount; i++)
+        {
+            f[0][i*coins[0]] = i;
+        }
+        for(int i = 1; i < coins.size(); i++)
+        {
+            for(int j = 1; j < coins[i] && j <= amount; j++)
+                f[i][j] = f[i-1][j];
+            for(int j = coins[i]; j <= amount; j++)
+            {
+                f[i][j] = min(f[i - 1][j], f[i][j - coins[i]] + 1);
+            }
+        }
+        if(f[coins.size() - 1][amount] != INF)
+            return f[coins.size() - 1][amount];
+        else
+            return -1;
+    }
+};
+
+/*一维数组*/
+#define INF 0x3f3f3f3f
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int>f(amount+5, INF);
+        f[0] = 0;
+        for(int i = 1; i*coins[0] <= amount; i++)
+        {
+            f[i*coins[0]] = i;
+        }
+        for(int i = 1; i < coins.size(); i++)
+        {
+            for(int j = coins[i]; j <= amount; j++)
+            {
+                f[j] = min(f[j], f[j - coins[i]] + 1);
+            }
+        }
+        if(f[amount] != INF)
+            return f[amount];
+        else
+            return -1;
+    }
+};
