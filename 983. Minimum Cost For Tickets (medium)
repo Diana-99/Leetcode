@@ -1,0 +1,35 @@
+#define INF 0x3f3f3f3f
+class Solution {
+public:
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        int total = 365;
+        vector<int>f(total + 5,INF);
+        f[0] = 0;
+        int p = 0;
+        for(int i = 1; i <= total; i++)
+        {
+            if(p < days.size() && days[p] == i)
+            {
+                p++;
+                if(i > 30)
+                {
+                    f[i] = min(min(f[i-1]+costs[0],f[i-7]+costs[1]), f[i-30]+costs[2]);
+                    //cout<<i<<f[i]<<endl;
+                }
+                else if(i > 7)
+                {
+                    f[i] = min(min(f[i-1]+costs[0],f[i-7]+costs[1]), costs[2]);
+                    //cout<<i<<f[i]<<endl;
+                }
+                else
+                {
+                    f[i] = min(f[i-1]+costs[0], costs[1]);
+                    //cout<<i<<f[i]<<endl;
+                }
+            }
+            else
+                f[i] = f[i - 1];
+        }
+        return f[total];
+    }
+};
